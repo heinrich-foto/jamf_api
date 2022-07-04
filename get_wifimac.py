@@ -19,4 +19,4 @@ if __name__ == "__main__":
     devices = j.get_device_list()
 
     for device in devices:
-        print(device.networkInformation.WiFiMAC)
+        print(f"{device.serialNumber}: {device.networkInformation.WiFiMAC}")
