@@ -12,6 +12,15 @@ from jamf_objects import User, Device, DeviceGroup, Placeholder, Location, UserG
 
 DEBUG = True
 
+def parse_serialnumber(serialnumber: str):
+    if serialnumber.startswith("S"):  # remove Serialnumber preix if present.
+        serialnumber = serialnumber[1:]
+    regex = re.compile("[A-Z0-9]{12}")
+    if regex.fullmatch(serialnumber):
+        return serialnumber
+    else:
+        raise ValueError(f"given serialnumber: *{serialnumber}* is not a valid serialnumber.")
+
 
 class JamfSchool(object):
     def __init__(self, network_id: str, api_pw: str, url: str):
