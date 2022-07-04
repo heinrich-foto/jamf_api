@@ -24,11 +24,17 @@ class JamfSchool(object):
         if any(elem is None for elem in (network_id, api_pw)):
             network_id = keyring.get_password("mz-jamf", "network_id")
             api_pw = keyring.get_password("mz-jamf", "api_pw")
-        if any(elem is None for elem in (network_id, api_pw)):
+
+        if url is None:
+            url = keyring.get_password("mz-jamf", "url")
+
+        if any(elem is None for elem in (network_id, api_pw, url)):
             print("please provide an HTTPBasicAuth API key for the jamf api.")
             print("network id and api pw is needed.")
             print("provide it in class initiation,")
-            print("or as keyring objekt from mz-jamf as network_id and api_pw")
+            print("or as keyring objekt from mz-jamf as network_id, api_pw and url")
+            raise ValueError("not enough info to initialize. provide a network_id, api_pw and url")
+
         self.__authObject = HTTPBasicAuth(network_id, api_pw)
         # https://api.zuludesk.com/, https://apiv6.zuludesk.com/ and https://oursubdomain.jamfcloud.com/api/
         if url.endswith("/"):
